@@ -126,15 +126,34 @@
   margin-top: 20px;
 }
 
-.option-image img {
-  margin: 10px 40px 0 40px;
-  width: 40%;
+.option-image-block img {
+  margin: 0 40px 0 40px;
+  width: 100%;
   border-radius: 5px;
 }
 
 .option-element {
   display: flex;
   align-items: center;
+}
+
+.option-image-block {
+  width: 40%;
+}
+
+.option-image-block span {
+  position: relative;
+  top: 25px;
+  left: 25px;
+  background-color: rgb(224, 217, 217);
+  padding: 2%;
+  border-radius: 50%;
+  margin-top: -10px;
+}
+
+.option-image-block span:hover {
+  background-color: rgb(185, 181, 181);
+  cursor: pointer;
 }
 
 .option-element input {

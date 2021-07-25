@@ -1,30 +1,133 @@
 import { block } from "./blocks/block";
 import * as allInterfaces from "./interfaces";
 import * as constants from "./conf";
+import { getHTMLElement } from "./htmlElements/getHTMLElement";
 
 export class Controller implements allInterfaces.controller {
-  currentBlock: allInterfaces.block;
-  parentElement: HTMLElement;
+  parentElementCreateBlock: HTMLElement;
   currentButtonBackground: string;
 
-  constructor(parentElement: HTMLElement) {
-    this.parentElement = parentElement;
-    this.currentBlock = new block("titleDescriptionBlock", parentElement);
+  constructor() {
     this.currentButtonBackground = "";
-    this.startRendering();
-    this.addEventListeners();
+    this.addNewBlock();
   }
 
-  startRendering(): void {
-    this.currentBlock.renderBlock();
+  addNewBlock(): void {
+    document.querySelector("main").appendChild(this.getCreateElementBlock());
+    this.startRenderingCreateBlock();
   }
 
-  addEventListeners(): void {
+  getCreateElementBlock(): HTMLElement {
+    let focusBlock = getHTMLElement(
+      "div",
+      ["focus-block"],
+      "focus-block",
+      null,
+      null
+    );
+    let mainBlock = getHTMLElement("div", ["main-block"], "main-block", null);
+    this.parentElementCreateBlock = mainBlock;
+    let block = getHTMLElement(
+      "div",
+      ["block"],
+      "block",
+      [focusBlock, mainBlock],
+      null
+    );
+
+    let span1 = getHTMLElement(
+      "span",
+      ["material-icons", "add-question", "operation-button"],
+      "add-question",
+      ["library_add"],
+      null
+    );
+    let span2 = getHTMLElement(
+      "span",
+      ["material-icons", "image-block", "operation-button"],
+      "image-block",
+      ["image"],
+      null
+    );
+    let span3 = getHTMLElement(
+      "span",
+      ["material-icons", "title-description-block", "operation-button"],
+      "title-description-block",
+      ["title"],
+      null
+    );
+    let span4 = getHTMLElement(
+      "span",
+      ["material-icons", "question-block", "operation-button"],
+      "question-block",
+      ["question_answer"],
+      null
+    );
+    let span5 = getHTMLElement(
+      "span",
+      ["material-icons", "delete-block", "operation-button"],
+      "delete-block",
+      ["delete"],
+      null
+    );
+
+    let operationBlock = getHTMLElement(
+      "div",
+      ["operation-block"],
+      "operation-block",
+      [span1, span2, span3, span4, span5],
+      null
+    );
+
+    let hoverSpan1 = getHTMLElement("span", null, null, ["Add Block"], {
+      "data-value": "add-question",
+    });
+    let hoverSpan2 = getHTMLElement("span", null, null, ["Image Block"], {
+      "data-value": "image-block",
+    });
+    let hoverSpan3 = getHTMLElement("span", null, null, ["Title Block"], {
+      "data-value": "title-description-block",
+    });
+    let hoverSpan4 = getHTMLElement("span", null, null, ["Question Block"], {
+      "data-value": "question-block",
+    });
+    let hoverSpan5 = getHTMLElement("span", null, null, ["Delete"], {
+      "data-value": "delete-block",
+    });
+
+    let hoverBlock = getHTMLElement(
+      "div",
+      ["hover-block"],
+      "hover-block",
+      [hoverSpan1, hoverSpan2, hoverSpan3, hoverSpan4, hoverSpan5],
+      null
+    );
+
+    let createBlock = getHTMLElement(
+      "div",
+      ["create-block"],
+      "create-block",
+      [block, operationBlock, hoverBlock],
+      null
+    );
+    return createBlock;
+  }
+
+  startRenderingCreateBlock(): void {
+    let newBlock = new block(
+      "titleDescriptionBlock",
+      this.parentElementCreateBlock
+    );
+    newBlock.renderBlock();
+    this.addEventListenersCreateBlock(newBlock);
+  }
+
+  addEventListenersCreateBlock(block: allInterfaces.block): void {
     this.addHeaderEventListeners();
-    this.addEventListenersOperationBlock();
+    this.addEventListenersOperationBlock(block);
   }
 
-  addEventListenersOperationBlock(): void {
+  addEventListenersOperationBlock(block: allInterfaces.block): void {
     let operationButton = (): void => {
       let operationBlock: allInterfaces.htmlElement =
         document.querySelector("#operation-block");
@@ -32,7 +135,7 @@ export class Controller implements allInterfaces.controller {
       operationBlock.addEventListener("click", (e: MouseEvent): void => {
         if (
           (<HTMLElement>e.target).tagName != "SPAN" ||
-          (<HTMLElement>e.target).id === this.currentBlock.getNameOfBlock()
+          (<HTMLElement>e.target).id === block.getNameOfBlock()
         ) {
           return;
         }
@@ -43,9 +146,9 @@ export class Controller implements allInterfaces.controller {
         if (getOperation === "add-question") {
         } else if (getOperation === "delete-block") {
         } else {
-          this.currentBlock.remove();
-          this.currentBlock = this.getBlock(getOperation);
-          this.currentBlock.renderBlock();
+          block.remove();
+          block = this.getBlock(getOperation);
+          block.renderBlock();
           this.currentButtonBackground =
             constants.currentBlockOperationButtonColor;
         }
@@ -118,6 +221,6 @@ export class Controller implements allInterfaces.controller {
     } else {
       blockName = "questionBlock";
     }
-    return new block(blockName, this.parentElement);
+    return new block(blockName, this.parentElementCreateBlock);
   }
 }

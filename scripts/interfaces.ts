@@ -53,8 +53,7 @@ export interface block {
 }
 
 export interface controller {
-  currentBlock: block;
-  parentElement: HTMLElement;
+  parentElementCreateBlock: HTMLElement;
   currentButtonBackground: string;
 }
 
@@ -110,4 +109,5 @@ export interface option {
   getBlock(): HTMLElement;
   addImageElement(src: string): void;
   remove(): void;
+  removeImageBlock(): void;
 }

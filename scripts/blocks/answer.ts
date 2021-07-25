@@ -4,6 +4,7 @@ import {
   getImageSource,
   uploadImageButton,
 } from "../htmlElements/image_upload";
+import { getHTMLElement } from "../htmlElements/getHTMLElement";
 
 let count = 0;
 export class StringAnswer implements allInterfaces.stringBased {
@@ -74,6 +75,16 @@ export class ChoiceAnswer implements allInterfaces.optionBased {
             option.addImageElement(e);
           });
           uploadImageButton.click();
+        }
+
+        if (element.innerText == "delete") {
+          // console.log(element.parentNode.parentNode.);
+          let option =
+            this.optionElementList[
+              Number((<HTMLElement>element.parentNode.parentNode).id)
+            ];
+
+          option.removeImageBlock();
         }
 
         if (element.innerText == "add") {
@@ -183,10 +194,21 @@ class Option implements allInterfaces.option {
     if (this.element.querySelector("img") != null) {
       (<HTMLImageElement>this.element.children[1]).src = src;
     } else {
-      let imageElement = document.createElement("img");
-      imageElement.src = src;
-      this.element.appendChild(imageElement);
+      let imageElement = getHTMLElement("img", null, null, null, { src: src });
+      let deleteImage = getHTMLElement("span", ["material-icons"], null, [
+        "delete",
+      ]);
+      let imageBlock = getHTMLElement("div", ["option-image-block"], null, [
+        deleteImage,
+        imageElement,
+      ]);
+      this.image = imageBlock;
+      this.element.appendChild(imageBlock);
     }
+  }
+
+  removeImageBlock() {
+    this.image.remove();
   }
 
   remove() {
