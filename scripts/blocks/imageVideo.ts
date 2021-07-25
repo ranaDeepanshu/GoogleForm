@@ -4,6 +4,7 @@ import {
   getImageSource,
   uploadImageButton,
 } from "../htmlElements/image_upload";
+import { getHTMLElement } from "../htmlElements/getHTMLElement";
 
 export class imageBlock implements allInterfaces.imageVideoBlock {
   name: allInterfaces.blockID;
@@ -62,5 +63,25 @@ export class imageBlock implements allInterfaces.imageVideoBlock {
     inputElement.placeholder = "Caption Goes Here";
     inputElement.classList.add("caption");
     return inputElement;
+  }
+
+  getQuestionElement(): HTMLElement {
+    let caption = getHTMLElement(
+      "h3",
+      [],
+      null,
+      [this.caption.value || "caption"],
+      null
+    );
+    let titleDescription = this.titleAndDescription.getQuestionElement();
+    titleDescription.classList.remove("form-block");
+    let imageQuestionBlock = getHTMLElement(
+      "div",
+      ["form-block"],
+      null,
+      [titleDescription, this.imageElement, caption],
+      null
+    );
+    return imageQuestionBlock;
   }
 }

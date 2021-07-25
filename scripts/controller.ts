@@ -2,10 +2,13 @@ import { block } from "./blocks/block";
 import * as allInterfaces from "./interfaces";
 import * as constants from "./conf";
 import { getHTMLElement } from "./htmlElements/getHTMLElement";
+import { addBlock } from "./blocks/model";
+let count: number = 0;
 
 export class Controller implements allInterfaces.controller {
   parentElementCreateBlock: HTMLElement;
   currentButtonBackground: string;
+  currentCreateBlock: HTMLElement;
 
   constructor() {
     this.currentButtonBackground = "";
@@ -13,7 +16,8 @@ export class Controller implements allInterfaces.controller {
   }
 
   addNewBlock(): void {
-    document.querySelector("main").appendChild(this.getCreateElementBlock());
+    this.currentCreateBlock = this.getCreateElementBlock();
+    document.querySelector("main").appendChild(this.currentCreateBlock);
     this.startRenderingCreateBlock();
   }
 
@@ -114,11 +118,14 @@ export class Controller implements allInterfaces.controller {
   }
 
   startRenderingCreateBlock(): void {
+    count++;
     let newBlock = new block(
       "titleDescriptionBlock",
-      this.parentElementCreateBlock
+      this.parentElementCreateBlock,
+      count
     );
     newBlock.renderBlock();
+    addBlock(newBlock);
     this.addEventListenersCreateBlock(newBlock);
   }
 
@@ -144,6 +151,13 @@ export class Controller implements allInterfaces.controller {
           .id as allInterfaces.Operations;
 
         if (getOperation === "add-question") {
+          let mainElement = document.querySelector("main");
+          mainElement.replaceChild(
+            block.getQuestion(),
+            this.currentCreateBlock
+          );
+          this.addNewBlock();
+          mainElement.appendChild(this.currentCreateBlock);
         } else if (getOperation === "delete-block") {
         } else {
           block.remove();
@@ -221,6 +235,6 @@ export class Controller implements allInterfaces.controller {
     } else {
       blockName = "questionBlock";
     }
-    return new block(blockName, this.parentElementCreateBlock);
+    return new block(blockName, this.parentElementCreateBlock, count);
   }
 }

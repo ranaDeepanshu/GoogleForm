@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap");
 @import url("drop_down_select.css");
 @import url("questionBlock.css");
+@import url("formElement.css");
 
 *,
 *:after,
@@ -68,7 +69,7 @@ input:focus {
 }
 
 .create-block {
-  display: inline-flex;
+  display: flex;
   width: 90%;
   background-color: transparent;
 }
@@ -121,6 +122,7 @@ input:focus {
 
 main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   width: 70%;
   margin: 100px 12% auto 17%;

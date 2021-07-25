@@ -1,5 +1,6 @@
 import * as allInterfaces from "../interfaces";
 import * as constants from "../conf";
+import { getHTMLElement } from "../htmlElements/getHTMLElement";
 
 export class titleDescription implements allInterfaces.titleDescriptionBlock {
   title: HTMLElement;
@@ -54,7 +55,6 @@ export class titleDescription implements allInterfaces.titleDescriptionBlock {
   }
 
   addEventListeners(): void {
-    console.log("dfsf");
     this.title.querySelector("button").addEventListener("click", (e) => {
       if (this.description.classList.contains("hide-description")) {
         this.description.classList.remove("hide-description");
@@ -63,5 +63,32 @@ export class titleDescription implements allInterfaces.titleDescriptionBlock {
         this.description.classList.add("hide-description");
       }
     });
+  }
+
+  getQuestionElement(): HTMLElement {
+    let titleElement = getHTMLElement(
+      "h1",
+      [],
+      null,
+      [(<HTMLInputElement>this.title.childNodes[0]).value + ""],
+      null
+    );
+
+    let descriptionElement = getHTMLElement(
+      "h2",
+      [],
+      null,
+      [this.description.value || "Description(Optional)"],
+      null
+    );
+    let titleDescriptionQuestionBlock = getHTMLElement(
+      "div",
+      ["form-block"],
+      null,
+      [titleElement, descriptionElement],
+      null
+    );
+
+    return titleDescriptionQuestionBlock;
   }
 }

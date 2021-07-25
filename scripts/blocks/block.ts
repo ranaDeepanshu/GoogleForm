@@ -15,15 +15,23 @@ export class block implements allInterfaces.block {
   type: allInterfaces.blockNames;
   parentElement: HTMLElement;
   childElement: HTMLElement;
+  childFormElement: HTMLElement;
+  id: number;
 
-  constructor(type: allInterfaces.blockNames, parentElement: HTMLElement) {
+  constructor(
+    type: allInterfaces.blockNames,
+    parentElement: HTMLElement,
+    id: number
+  ) {
     this.block = new blockList[type]();
     this.parentElement = parentElement;
     this.type = type;
+    this.id = id;
   }
 
   renderBlock(): void {
     this.childElement = this.block.getBlock();
+    this.childElement.id = this.id + "block";
     this.parentElement.appendChild(this.childElement);
     this.changeButtonBackground(constants.currentBlockOperationButtonColor);
   }
@@ -43,5 +51,11 @@ export class block implements allInterfaces.block {
     );
 
     button.style.backgroundColor = color;
+  }
+
+  getQuestion(): HTMLElement {
+    this.childFormElement = this.block.getQuestionElement();
+    this.childFormElement.id = this.childElement.id;
+    return this.childFormElement;
   }
 }

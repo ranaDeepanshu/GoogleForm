@@ -26,6 +26,12 @@ export class StringAnswer implements allInterfaces.stringBased {
     answerBlock.appendChild(inputField);
     return answerBlock;
   }
+
+  getAnswerForm(): HTMLInputElement {
+    let inputElement = document.createElement("input");
+    inputElement.placeholder = "Enter Your Answer Here";
+    return inputElement;
+  }
 }
 
 export class ChoiceAnswer implements allInterfaces.optionBased {
@@ -58,6 +64,19 @@ export class ChoiceAnswer implements allInterfaces.optionBased {
 
   getOption(): allInterfaces.option {
     return new Option(this.answerType);
+  }
+
+  getAnswerForm(): HTMLElement {
+    let optionElements = getHTMLElement(
+      "div",
+      ["option-form-list"],
+      null,
+      Object.keys(this.optionElementList).map((val) => {
+        return this.optionElementList[+val].getOptionForm();
+      })
+    );
+
+    return optionElements;
   }
 
   addEventListeners(): void {
@@ -205,6 +224,21 @@ class Option implements allInterfaces.option {
       this.image = imageBlock;
       this.element.appendChild(imageBlock);
     }
+  }
+
+  getOptionForm(): HTMLElement {
+    let children: (HTMLElement | string)[] = [
+      this.optionImage,
+      getHTMLElement("h3", null, null, [
+        this.inputElement.value || "Option Value",
+      ]),
+    ];
+
+    if (this.image) {
+      children.push(<HTMLElement>this.image.childNodes[1]);
+    }
+    let option = getHTMLElement("div", ["option-form"], null, children, null);
+    return option;
   }
 
   removeImageBlock() {

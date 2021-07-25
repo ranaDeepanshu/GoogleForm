@@ -6,6 +6,7 @@ export type blockID =
 interface commonProperties {
   name: blockID;
   getBlock(): HTMLElement;
+  getQuestionElement(): HTMLElement;
 }
 
 export type htmlElement = HTMLElement | null;
@@ -43,6 +44,7 @@ export type blockNames =
 
 export interface block {
   childElement: HTMLElement;
+  childFormElement: HTMLElement;
   block: blockTypes;
   type: blockNames;
   parentElement: HTMLElement;
@@ -50,11 +52,13 @@ export interface block {
   renderBlock(): void;
   remove(): void;
   changeButtonBackground(color: string): void;
+  getQuestion(): HTMLElement;
 }
 
 export interface controller {
   parentElementCreateBlock: HTMLElement;
   currentButtonBackground: string;
+  currentCreateBlock: HTMLElement;
 }
 
 export type Operations =
@@ -80,6 +84,7 @@ export interface stringBased extends Answer {
 export interface Answer {
   element: HTMLElement;
   getBlock(): HTMLElement;
+  getAnswerForm(): HTMLElement;
 }
 
 export interface dropDownElement {
@@ -110,4 +115,5 @@ export interface option {
   addImageElement(src: string): void;
   remove(): void;
   removeImageBlock(): void;
+  getOptionForm(): HTMLElement;
 }

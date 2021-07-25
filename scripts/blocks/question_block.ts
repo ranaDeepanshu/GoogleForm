@@ -2,6 +2,7 @@ import * as allInterfaces from "../interfaces";
 import { dropDown } from "../htmlElements/drop_down";
 import * as constants from "../conf";
 import { StringAnswer, ChoiceAnswer } from "./answer";
+import { getHTMLElement } from "../htmlElements/getHTMLElement";
 
 export class question implements allInterfaces.questionBlock {
   name: allInterfaces.blockID;
@@ -146,5 +147,26 @@ export class question implements allInterfaces.questionBlock {
           .innerText as allInterfaces.answerType
       );
     });
+  }
+
+  getQuestionElement(): HTMLElement {
+    let question = getHTMLElement("h2", [], null, [
+      (this.question.childNodes[0] as HTMLInputElement).value ||
+        "Enter Your Question",
+    ]);
+
+    let note = getHTMLElement("h4", [], null, [
+      "Note:- " + this.required.querySelector("input").value ||
+        "Enter Your Note Here",
+    ]);
+
+    let questionFormBlock = getHTMLElement(
+      "div",
+      ["form-block"],
+      null,
+      [question, this.answer.getAnswerForm(), note],
+      null
+    );
+    return questionFormBlock;
   }
 }
