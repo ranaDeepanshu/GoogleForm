@@ -1,0 +1,79 @@
+.custom-select-wrapper {
+  position: relative;
+  width: 22%;
+  min-width: 200px;
+}
+
+.custom-select {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-select__Trigger {
+  position: relative;
+  width: 100%;
+}
+
+.custom-options {
+  width: 100%;
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  visibility: hidden;
+  /* opacity: 0; */
+  z-index: 2;
+}
+
+.option {
+  margin: 8px 8px 8px 10px;
+}
+
+.custom-option {
+  position: relative;
+  display: block;
+  /* margin: 0 10px 0 15px; */
+  margin-left: 15px;
+  line-height: 35px;
+  cursor: pointer;
+  background-color: rgb(240, 236, 236);
+  /* padding-right: 5px; */
+}
+
+.custom-option:hover {
+  background-color: rgb(187, 184, 184);
+  border-radius: 3px;
+  /* border: 1px solid rgb(73, 72, 72); */
+}
+
+.inner-text {
+  position: absolute;
+  top: 3px;
+  font-size: 16px;
+  font-weight: 300;
+  color: #3b3b3b;
+}
+
+.custom-select__Trigger .custom-option {
+  border-radius: 3px;
+  border: 1px solid rgb(73, 72, 72);
+}
+
+div:focus {
+  outline: none;
+}
+
+.dropdown {
+  animation: growDown 1000ms linear forwards;
+  transform-origin: top center;
+}
+
+@keyframes growDown {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
