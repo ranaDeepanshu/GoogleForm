@@ -41,6 +41,7 @@ export class question implements allInterfaces.questionBlock {
   }
 
   getBlock(): HTMLElement {
+    if (this.element) return this.element;
     let insideBlock: HTMLElement = document.createElement("div");
     insideBlock.classList.add("inside-block");
     insideBlock.appendChild(this.question);

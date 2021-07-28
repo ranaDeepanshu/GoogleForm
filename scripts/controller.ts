@@ -2,7 +2,12 @@ import { block } from "./blocks/block";
 import * as allInterfaces from "./interfaces";
 import * as constants from "./conf";
 import { getHTMLElement } from "./htmlElements/getHTMLElement";
-import { addBlock } from "./blocks/model";
+import {
+  addBlock,
+  getCreateElement,
+  getFormElement,
+  replace,
+} from "./blocks/model";
 let count: number = 0;
 
 export class Controller implements allInterfaces.controller {
@@ -13,12 +18,26 @@ export class Controller implements allInterfaces.controller {
   constructor() {
     this.currentButtonBackground = "";
     this.addNewBlock();
+    this.addHeaderEventListeners();
+    this.addEventListenerMain();
   }
 
   addNewBlock(): void {
     this.currentCreateBlock = this.getCreateElementBlock();
     document.querySelector("main").appendChild(this.currentCreateBlock);
-    this.startRenderingCreateBlock();
+    count++;
+    let newBlock = new block(
+      "titleDescriptionBlock",
+      this.parentElementCreateBlock,
+      count
+    );
+    addBlock(newBlock);
+    this.startRenderingCreateBlock(newBlock);
+  }
+
+  addBlock(): void {
+    this.currentCreateBlock = this.getCreateElementBlock();
+    // this.startRenderingCreateBlock(block)
   }
 
   getCreateElementBlock(): HTMLElement {
@@ -117,20 +136,13 @@ export class Controller implements allInterfaces.controller {
     return createBlock;
   }
 
-  startRenderingCreateBlock(): void {
-    count++;
-    let newBlock = new block(
-      "titleDescriptionBlock",
-      this.parentElementCreateBlock,
-      count
-    );
+  startRenderingCreateBlock(newBlock: allInterfaces.block): void {
+    newBlock.updateParentElement(this.parentElementCreateBlock);
     newBlock.renderBlock();
-    addBlock(newBlock);
     this.addEventListenersCreateBlock(newBlock);
   }
 
   addEventListenersCreateBlock(block: allInterfaces.block): void {
-    this.addHeaderEventListeners();
     this.addEventListenersOperationBlock(block);
   }
 
@@ -160,8 +172,10 @@ export class Controller implements allInterfaces.controller {
           mainElement.appendChild(this.currentCreateBlock);
         } else if (getOperation === "delete-block") {
         } else {
+          let temp = block;
           block.remove();
           block = this.getBlock(getOperation);
+          replace(temp, block);
           block.renderBlock();
           this.currentButtonBackground =
             constants.currentBlockOperationButtonColor;
@@ -236,5 +250,36 @@ export class Controller implements allInterfaces.controller {
       blockName = "questionBlock";
     }
     return new block(blockName, this.parentElementCreateBlock, count);
+  }
+
+  addEventListenerMain() {
+    document.querySelector("main").addEventListener("click", (event) => {
+      // console.log(event.target);
+      if (/^[0-9]/.test((event.target as HTMLElement).id || "")) {
+        if (
+          (event.target as HTMLElement).id ===
+          (this.parentElementCreateBlock.childNodes[0] as HTMLElement).id
+        )
+          return;
+        let mainElement = document.querySelector("main");
+        mainElement.replaceChild(
+          getFormElement(
+            <HTMLElement>this.parentElementCreateBlock.childNodes[0]
+          ),
+          this.currentCreateBlock
+        );
+
+        this.addBlock();
+        mainElement.replaceChild(
+          this.currentCreateBlock,
+          <HTMLElement>event.target
+        );
+
+        this.startRenderingCreateBlock(
+          getCreateElement((<HTMLElement>event.target).id)
+        );
+      }
+      // console.log("click");
+    });
   }
 }

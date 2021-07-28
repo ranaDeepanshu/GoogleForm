@@ -65,7 +65,7 @@ div:focus {
 }
 
 .dropdown {
-  animation: growDown 1000ms linear forwards;
+  animation: growDown 300ms linear forwards;
   transform-origin: top center;
 }
 

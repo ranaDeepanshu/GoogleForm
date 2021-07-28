@@ -72,6 +72,7 @@ input:focus {
   display: flex;
   width: 90%;
   background-color: transparent;
+  margin-bottom: 30px;
 }
 
 .block {
@@ -125,7 +126,7 @@ main {
   flex-direction: column;
   justify-content: center;
   width: 70%;
-  margin: 100px 12% auto 17%;
+  margin: 50px 10% auto 20%;
 }
 
 .hover-block {

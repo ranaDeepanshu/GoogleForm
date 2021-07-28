@@ -56,6 +56,15 @@ export class block implements allInterfaces.block {
   getQuestion(): HTMLElement {
     this.childFormElement = this.block.getQuestionElement();
     this.childFormElement.id = this.childElement.id;
+    this.childFormElement.addEventListener("click", (event) => {
+      if (event.target === this.childFormElement) return;
+      this.childFormElement.click();
+    });
+    // console.log(this.childElement);
     return this.childFormElement;
+  }
+
+  updateParentElement(element: HTMLElement): void {
+    this.parentElement = element;
   }
 }

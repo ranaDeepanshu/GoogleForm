@@ -11,6 +11,7 @@ export class imageBlock implements allInterfaces.imageVideoBlock {
   imageElement: HTMLImageElement;
   caption: HTMLInputElement;
   titleAndDescription: allInterfaces.titleDescriptionBlock;
+  uploadButton: HTMLButtonElement;
 
   constructor() {
     this.name = "image-block";
@@ -18,6 +19,8 @@ export class imageBlock implements allInterfaces.imageVideoBlock {
     this.imageElement.classList.add("image-element");
     this.titleAndDescription = new titleDescription();
     this.caption = this.getCaption();
+    this.uploadButton = this.getUploadButton();
+    this.uploadButton.click();
   }
 
   getBlock(): HTMLElement {
@@ -25,11 +28,8 @@ export class imageBlock implements allInterfaces.imageVideoBlock {
     insideBlock.classList.add("inside-block");
 
     let tempDiv: HTMLElement = document.createElement("div");
-    let uploadButton = this.getUploadButton();
 
-    uploadButton.click();
-
-    tempDiv.appendChild(uploadButton);
+    tempDiv.appendChild(this.uploadButton);
     tempDiv.appendChild(this.imageElement);
     tempDiv.appendChild(this.caption);
     // tempDiv.classList.add("image-and-button");

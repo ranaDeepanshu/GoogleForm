@@ -53,6 +53,7 @@ export interface block {
   remove(): void;
   changeButtonBackground(color: string): void;
   getQuestion(): HTMLElement;
+  updateParentElement(element: HTMLElement): void;
 }
 
 export interface controller {

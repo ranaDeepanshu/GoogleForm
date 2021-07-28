@@ -235,8 +235,9 @@ class Option implements allInterfaces.option {
     ];
 
     if (this.image) {
-      children.push(<HTMLElement>this.image.childNodes[1]);
+      children.push(this.image.childNodes[1].cloneNode(true) as HTMLElement);
     }
+
     let option = getHTMLElement("div", ["option-form"], null, children, null);
     return option;
   }
